@@ -16,4 +16,5 @@ jobs:
     steps:
     - uses: actions/checkout@v2
     - name: Build the Docker image
-      run: docker build . --file ToppingsApi/ToppingsApi/Dockerfile --tag toppings-api:$(date +%s)
+      run: docker build . --file ToppingsApi/Dockerfile --tag toppings-api:$(date +%s)
+      working-directory: ToppingsApi
