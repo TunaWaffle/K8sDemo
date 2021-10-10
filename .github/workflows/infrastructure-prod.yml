@@ -1,16 +1,16 @@
-name: Infrastructure Global
+name: Infrastructure Prod
 
 on:
   push:
     branches: [ main ]
     paths:
       - 'Infrastructure/**'
-      - '.github/workflows/infrastructure-global.yml'
+      - '.github/workflows/infrastructure-prod.yml'
   workflow_dispatch:
 
 env:
   TF_VERSION: 1.0.8
-  TF_ENV: global
+  TF_ENV: prod
 
 jobs:
   terraform-plan:

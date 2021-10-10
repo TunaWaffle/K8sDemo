@@ -1,5 +1,9 @@
-module "env" {
-    source = "../../modules/env"
-
-    environment = "Prod"
+locals {
+  environment = "Prod"
 }
+
+# module "env" {
+#     source = "../../modules/env"
+
+#     environment = local.environment
+# }
