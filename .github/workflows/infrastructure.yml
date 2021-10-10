@@ -23,7 +23,10 @@ jobs:
       with:
         creds: ${{ secrets.AZURE_CREDENTIALS }}
     
-    - run: terraform init
+    - name: Terraform Init
+      run: terraform init
+      working-directory: Infrastructure\env\dev
 
-    - id: plan
+    - name: Terraform Plan
       run: terraform plan -no-color
+      working-directory: Infrastructure\env\dev
