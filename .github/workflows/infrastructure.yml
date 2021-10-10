@@ -25,8 +25,8 @@ jobs:
     
     - name: Terraform Init
       run: terraform init
-      working-directory: Infrastructure\env\dev
+      working-directory: Infrastructure/env/dev
 
     - name: Terraform Plan
       run: terraform plan -no-color
-      working-directory: Infrastructure\env\dev
+      working-directory: Infrastructure/env/dev
