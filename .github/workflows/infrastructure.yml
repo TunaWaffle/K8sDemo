@@ -67,6 +67,6 @@ jobs:
       run: terraform init -input=false
       working-directory: Infrastructure/env/dev
 
-    - name: Terraform Plan
+    - name: Terraform Apply
       run: terraform apply -auto-approve -no-color -input=false
       working-directory: Infrastructure/env/dev
