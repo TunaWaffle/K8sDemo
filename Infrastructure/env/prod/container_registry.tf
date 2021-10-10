@@ -13,7 +13,7 @@ resource "random_pet" "cr_name" {
 }
 
 resource "azurerm_container_registry" "acr" {
-  name                = "demo${cr_name}cr"
+  name                = "demo${random_pet.cr_name.id}cr"
   resource_group_name = azurerm_resource_group.global_rg.name
   location            = azurerm_resource_group.global_rg.location
   sku                 = "Basic"
