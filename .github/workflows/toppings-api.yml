@@ -47,8 +47,8 @@ jobs:
 
     - name: Build and Push Docker image
       run: |
-        docker build . --file ToppingsApi/Dockerfile --tag toppings-api:${{ env.version }}
-        docker push ${{ steps.get_acr_id.outputs.acr_uri }}/toppings-api
+        docker build . --file ToppingsApi/Dockerfile --tag ${{ steps.get_acr_id.outputs.acr_uri }}/toppings-api:${{ env.version }}
+        docker push --all-tags ${{ steps.get_acr_id.outputs.acr_uri }}/toppings-api
       working-directory: ToppingsApi
 
     - name: Save Helm Chart
