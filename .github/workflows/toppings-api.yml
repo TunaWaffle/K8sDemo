@@ -17,6 +17,7 @@ on:
 
 env:
   version: "0.0.${{ github.run_number }}"
+  HELM_EXPERIMENTAL_OCI: 1
 
 jobs:
 
