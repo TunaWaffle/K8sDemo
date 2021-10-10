@@ -1,0 +1,52 @@
+name: Toppings API
+
+on:
+  push:
+    branches: [ main ]
+    paths-ignore:
+      - 'Infrastructure/**'
+      - 'docs/**'
+      - '*.md'
+  pull_request:
+    branches: [ main ]
+    paths-ignore:
+      - 'Infrastructure/**'
+      - 'docs/**'
+      - '*.md'
+  workflow_dispatch:
+
+env:
+  version: "0.0.${{ github.run_number }}"
+
+jobs:
+
+  build:
+    environment: Dev
+    runs-on: ubuntu-latest
+
+    steps:
+    - uses: actions/checkout@v2
+
+    - name: Azure Login
+      uses: azure/login@v1
+      with:
+        creds: '{"clientId":"${{ secrets.AZURE_CLIENT_ID }}","clientSecret":"${{ secrets.AZURE_CLIENT_SECRET }}","subscriptionId":"${{ secrets.AZURE_SUBSCRIPTION_ID }}","tenantId":"${{ secrets.AZURE_TENANT_ID }}"}'
+
+    - id: get_acr_id
+      name: Get ACR Server
+      shell: pwsh
+      run: |
+        $loginServer = $(az acr list --resource-group Demo-Global --query [0].loginServer).trim('"')
+        echo "::set-output name=acr_uri::$loginServer"
+
+    - name: Docker Login ACR
+      run: docker login ${{ get_acr_id.outputs.acr_uri }}
+
+    - name: Build the Docker image
+      run: |
+        docker build . --file ToppingsApi/Dockerfile --tag ${{ get_acr_id.outputs.acr_uri }}/waffles/toppings-api:$(date +%s)
+        docker push ${{ get_acr_id.outputs.acr_uri }}/waffles/toppings-api
+      working-directory: ToppingsApi
+
+    - name: Save Helm Chart
+      run: helm chart save . ${{ get_acr_id.outputs.acr_uri }}/helm/toppings-api:${{ env.version }}
