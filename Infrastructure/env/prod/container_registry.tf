@@ -11,6 +11,7 @@ resource "random_pet" "cr_name" {
     rg = azurerm_resource_group.global_rg.id
   }
   separator = ""
+  length    = 1
 }
 
 resource "azurerm_container_registry" "acr" {
