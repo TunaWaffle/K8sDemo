@@ -10,6 +10,7 @@ resource "random_pet" "cr_name" {
   keepers = {
     rg = azurerm_resource_group.global_rg.id
   }
+  separator = ""
 }
 
 resource "azurerm_container_registry" "acr" {
