@@ -7,7 +7,7 @@ env:
   TF_VERSION: 1.0.8
 
 jobs:
-  terraform-destroy:
+  terraform-destroy-dev:
     environment: Dev
     runs-on: ubuntu-latest
 
@@ -16,6 +16,7 @@ jobs:
       ARM_CLIENT_SECRET: ${{ secrets.AZURE_CLIENT_SECRET }}
       ARM_SUBSCRIPTION_ID: ${{ secrets.AZURE_SUBSCRIPTION_ID }}
       ARM_TENANT_ID: ${{ secrets.AZURE_TENANT_ID }}
+      TF_ENV: dev
       TF_IN_AUTOMATION: true
 
     steps:
@@ -30,8 +31,68 @@ jobs:
     
     - name: Terraform Init
       run: terraform init -input=false
-      working-directory: Infrastructure/env/dev
+      working-directory: Infrastructure/env/${{ env.TF_ENV }}
 
     - name: Terraform Apply
       run: terraform destroy -auto-approve -no-color -input=false
-      working-directory: Infrastructure/env/dev
+      working-directory: Infrastructure/env/${{ env.TF_ENV }}
+
+  terraform-destroy-prod:
+    environment: Prod
+    runs-on: ubuntu-latest
+
+    env:
+      ARM_CLIENT_ID: ${{ secrets.AZURE_CLIENT_ID }}
+      ARM_CLIENT_SECRET: ${{ secrets.AZURE_CLIENT_SECRET }}
+      ARM_SUBSCRIPTION_ID: ${{ secrets.AZURE_SUBSCRIPTION_ID }}
+      ARM_TENANT_ID: ${{ secrets.AZURE_TENANT_ID }}
+      TF_ENV: prod
+      TF_IN_AUTOMATION: true
+
+    steps:
+    - uses: actions/checkout@v2
+    - uses: hashicorp/setup-terraform@v1
+      with:
+        terraform_version: ${{ env.TF_VERSION }}
+    - name: Azure Login
+      uses: azure/login@v1
+      with:
+        creds: '{"clientId":"${{ secrets.AZURE_CLIENT_ID }}","clientSecret":"${{ secrets.AZURE_CLIENT_SECRET }}","subscriptionId":"${{ secrets.AZURE_SUBSCRIPTION_ID }}","tenantId":"${{ secrets.AZURE_TENANT_ID }}"}'
+    
+    - name: Terraform Init
+      run: terraform init -input=false
+      working-directory: Infrastructure/env/${{ env.TF_ENV }}
+
+    - name: Terraform Apply
+      run: terraform destroy -auto-approve -no-color -input=false
+      working-directory: Infrastructure/env/${{ env.TF_ENV }}
+
+  terraform-destroy-global:
+    environment: Prod
+    runs-on: ubuntu-latest
+
+    env:
+      ARM_CLIENT_ID: ${{ secrets.AZURE_CLIENT_ID }}
+      ARM_CLIENT_SECRET: ${{ secrets.AZURE_CLIENT_SECRET }}
+      ARM_SUBSCRIPTION_ID: ${{ secrets.AZURE_SUBSCRIPTION_ID }}
+      ARM_TENANT_ID: ${{ secrets.AZURE_TENANT_ID }}
+      TF_ENV: global
+      TF_IN_AUTOMATION: true
+
+    steps:
+    - uses: actions/checkout@v2
+    - uses: hashicorp/setup-terraform@v1
+      with:
+        terraform_version: ${{ env.TF_VERSION }}
+    - name: Azure Login
+      uses: azure/login@v1
+      with:
+        creds: '{"clientId":"${{ secrets.AZURE_CLIENT_ID }}","clientSecret":"${{ secrets.AZURE_CLIENT_SECRET }}","subscriptionId":"${{ secrets.AZURE_SUBSCRIPTION_ID }}","tenantId":"${{ secrets.AZURE_TENANT_ID }}"}'
+    
+    - name: Terraform Init
+      run: terraform init -input=false
+      working-directory: Infrastructure/env/${{ env.TF_ENV }}
+
+    - name: Terraform Apply
+      run: terraform destroy -auto-approve -no-color -input=false
+      working-directory: Infrastructure/env/${{ env.TF_ENV }}

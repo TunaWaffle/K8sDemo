@@ -4,7 +4,7 @@ resource "azurerm_resource_group" "global_rg" {
 }
 
 resource "azurerm_container_registry" "acr" {
-  name                = "demo-container-registry"
+  name                = "democr"
   resource_group_name = azurerm_resource_group.global_rg.name
   location            = azurerm_resource_group.global_rg.location
   sku                 = "Basic"
