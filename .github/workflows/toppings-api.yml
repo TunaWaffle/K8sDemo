@@ -52,7 +52,7 @@ jobs:
       working-directory: ToppingsApi
 
     - name: Save Helm Chart
-      run: helm package . --version ${{ env.version }}
+      run: helm package ToppingsApi --version ${{ env.version }}
       working-directory: ToppingsApi/helm
 
     - name: Push Helm Chart
