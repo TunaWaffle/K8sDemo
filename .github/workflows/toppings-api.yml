@@ -38,9 +38,11 @@ jobs:
       run: |
         $loginServer = $(az acr list --resource-group Demo-Global --query [0].loginServer).trim('"')
         echo "::set-output name=acr_uri::$loginServer"
+        $acrName = $(az acr list --resource-group Demo-Global --query [0].name).trim('"')
+        echo "::set-output name=acr_name::$loginServer"
 
     - name: Docker Login ACR
-      run: docker login ${{ steps.get_acr_id.outputs.acr_uri }}
+      run: docker login ${{ steps.get_acr_id.outputs.acr_uri }} --username ${{ secrets.AZURE_CLIENT_ID }} --password ${{ secrets.AZURE_CLIENT_SECRET }}
 
     - name: Build the Docker image
       run: |
