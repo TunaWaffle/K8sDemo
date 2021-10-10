@@ -26,5 +26,3 @@ jobs:
     - name: Build the Docker image
       run: docker build . --file ToppingsApi/Dockerfile --tag toppings-api:$(date +%s)
       working-directory: ToppingsApi
-    - name: Build the Helm Chart
-      run: 
