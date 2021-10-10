@@ -1,4 +1,4 @@
-name: Docker Image CI
+name: Infrastructure
 
 on:
   push:
@@ -10,7 +10,7 @@ on:
 jobs:
 
   terraform:
-
+    environment: Dev
     runs-on: ubuntu-latest
 
     steps:
