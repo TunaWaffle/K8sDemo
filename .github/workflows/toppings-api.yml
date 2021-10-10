@@ -40,13 +40,13 @@ jobs:
         echo "::set-output name=acr_uri::$loginServer"
 
     - name: Docker Login ACR
-      run: docker login ${{ get_acr_id.outputs.acr_uri }}
+      run: docker login ${{ steps.get_acr_id.outputs.acr_uri }}
 
     - name: Build the Docker image
       run: |
-        docker build . --file ToppingsApi/Dockerfile --tag ${{ get_acr_id.outputs.acr_uri }}/waffles/toppings-api:$(date +%s)
-        docker push ${{ get_acr_id.outputs.acr_uri }}/waffles/toppings-api
+        docker build . --file ToppingsApi/Dockerfile --tag ${{ steps.get_acr_id.outputs.acr_uri }}/waffles/toppings-api:$(date +%s)
+        docker push ${{ steps.get_acr_id.outputs.acr_uri }}/waffles/toppings-api
       working-directory: ToppingsApi
 
     - name: Save Helm Chart
-      run: helm chart save . ${{ get_acr_id.outputs.acr_uri }}/helm/toppings-api:${{ env.version }}
+      run: helm chart save . ${{ steps.get_acr_id.outputs.acr_uri }}/helm/toppings-api:${{ env.version }}
