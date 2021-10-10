@@ -41,13 +41,14 @@ jobs:
         $acrName = $(az acr list --resource-group Demo-Global --query [0].name).trim('"')
         echo "::set-output name=acr_name::$loginServer"
 
+    # https://docs.microsoft.com/azure/container-registry/container-registry-auth-service-principal
     - name: Docker Login ACR
       run: docker login ${{ steps.get_acr_id.outputs.acr_uri }} --username ${{ secrets.AZURE_CLIENT_ID }} --password ${{ secrets.AZURE_CLIENT_SECRET }}
 
-    - name: Build the Docker image
+    - name: Build and Push Docker image
       run: |
-        docker build . --file ToppingsApi/Dockerfile --tag ${{ steps.get_acr_id.outputs.acr_uri }}/waffles/toppings-api:$(date +%s)
-        docker push ${{ steps.get_acr_id.outputs.acr_uri }}/waffles/toppings-api
+        docker build . --file ToppingsApi/Dockerfile --tag toppings-api:${{ env.version }}
+        docker push ${{ steps.get_acr_id.outputs.acr_uri }}/toppings-api
       working-directory: ToppingsApi
 
     - name: Save Helm Chart
