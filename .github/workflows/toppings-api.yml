@@ -52,4 +52,7 @@ jobs:
       working-directory: ToppingsApi
 
     - name: Save Helm Chart
-      run: helm chart save . ${{ steps.get_acr_id.outputs.acr_uri }}/helm/toppings-api:${{ env.version }}
+      run: helm package . --version ${{ env.version }}
+
+    - name: Push Helm Chart
+      run: helm push ToppingsApi-${{ env.version }}.tgz ${{ steps.get_acr_id.outputs.acr_uri }}/helm/toppings-api:${{ env.version }}

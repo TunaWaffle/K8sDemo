@@ -460,3 +460,8 @@ $RECYCLE.BIN/
 .terraform.lock.hcl
 *.tfstate
 *.tfstate.*
+
+##
+## Helm
+##
+*.tgz
