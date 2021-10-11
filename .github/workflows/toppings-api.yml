@@ -68,15 +68,13 @@ jobs:
     needs: build
     environment: Dev
     runs-on: ubuntu-latest
-  
-    stpes:
-      env:
-        cluster-name: Demo-Dev-aks
-        cluster-rg: Demo-Dev
-      # - name: Helm Registry Login
-      #   run: echo ${{ secrets.AZURE_CLIENT_SECRET }} | helm registry login ${{ steps.get_acr_id.outputs.acr_uri }} --username ${{ secrets.AZURE_CLIENT_ID }} --password-stdin
-      #   working-directory: ToppingsApi/helm
 
+    env:
+      cluster-name: Demo-Dev-aks
+      cluster-rg: Demo-Dev
+
+    stpes:
+      
       - name: Azure Login
         uses: azure/login@v1
         with:
