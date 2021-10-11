@@ -61,5 +61,5 @@ jobs:
       working-directory: ToppingsApi/helm
 
     - name: Push Helm Chart
-      run: helm push toppings-api-${{ env.version }}.tgz oci://${{ steps.get_acr_id.outputs.acr_uri }}/helm/toppings-api
+      run: helm push toppings-api-${{ env.version }}.tgz oci://${{ steps.get_acr_id.outputs.acr_uri }}/helm
       working-directory: ToppingsApi/helm
