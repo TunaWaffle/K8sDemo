@@ -92,4 +92,4 @@ jobs:
         run: helm pull oci://${{ needs.build.outputs.acr_uri }}/helm/toppings-api --version ${{ env.version }}
 
       - name: Helm Install
-        run: helm install toppings-release toppings-api --atomic
+        run: helm install toppings-release ./toppings-api-${{ env.version }} --atomic
