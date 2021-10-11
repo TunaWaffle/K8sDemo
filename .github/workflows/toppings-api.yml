@@ -73,8 +73,7 @@ jobs:
       cluster-name: Demo-Dev-aks
       cluster-rg: Demo-Dev
 
-    stpes:
-      
+    steps:
       - name: Azure Login
         uses: azure/login@v1
         with:
