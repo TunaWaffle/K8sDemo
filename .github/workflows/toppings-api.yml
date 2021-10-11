@@ -48,7 +48,7 @@ jobs:
 
     - name: Build and Push Docker image
       run: |
-        docker build . --file ToppingsApi/Dockerfile --tag ${{ steps.get_acr_id.outputs.acr_uri }}/toppings-api:${{ env.version }}
+        docker build . --file ToppingsApi/Dockerfile --tag ${{ steps.get_acr_id.outputs.acr_uri }}/images/toppings-api:${{ env.version }}
         docker push --all-tags ${{ steps.get_acr_id.outputs.acr_uri }}/images/toppings-api
       working-directory: ToppingsApi
 
