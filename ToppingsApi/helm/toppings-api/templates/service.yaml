@@ -1,9 +1,9 @@
 apiVersion: v1
 kind: Service
 metadata:
-  name: {{ include "ToppingsApi.fullname" . }}
+  name: {{ include "toppings-api.fullname" . }}
   labels:
-    {{- include "ToppingsApi.labels" . | nindent 4 }}
+    {{- include "toppings-api.labels" . | nindent 4 }}
 spec:
   type: {{ .Values.service.type }}
   ports:
@@ -12,4 +12,4 @@ spec:
       protocol: TCP
       name: http
   selector:
-    {{- include "ToppingsApi.selectorLabels" . | nindent 4 }}
+    {{- include "toppings-api.selectorLabels" . | nindent 4 }}

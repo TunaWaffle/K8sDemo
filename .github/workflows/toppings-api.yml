@@ -48,8 +48,8 @@ jobs:
 
     - name: Build and Push Docker image
       run: |
-        docker build . --file ToppingsApi/Dockerfile --tag ${{ steps.get_acr_id.outputs.acr_uri }}/images/toppings-api:${{ env.version }}
-        docker push --all-tags ${{ steps.get_acr_id.outputs.acr_uri }}/images/toppings-api
+        docker build . --file ToppingsApi/Dockerfile --tag ${{ steps.get_acr_id.outputs.acr_uri }}/toppings-api:${{ env.version }}
+        docker push --all-tags ${{ steps.get_acr_id.outputs.acr_uri }}/toppings-api
       working-directory: ToppingsApi
 
     - name: Helm Registry Login
@@ -57,9 +57,9 @@ jobs:
       working-directory: ToppingsApi/helm
     
     - name: Save Helm Chart
-      run: helm package ToppingsApi --version ${{ env.version }}
+      run: helm package toppings-api --version ${{ env.version }}
       working-directory: ToppingsApi/helm
 
     - name: Push Helm Chart
-      run: helm push ToppingsApi-${{ env.version }}.tgz oci://${{ steps.get_acr_id.outputs.acr_uri }}/helm/toppings-api
+      run: helm push toppings-api-${{ env.version }}.tgz oci://${{ steps.get_acr_id.outputs.acr_uri }}/helm/toppings-api
       working-directory: ToppingsApi/helm

@@ -1,16 +1,16 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: {{ include "ToppingsApi.fullname" . }}
+  name: {{ include "toppings-api.fullname" . }}
   labels:
-    {{- include "ToppingsApi.labels" . | nindent 4 }}
+    {{- include "toppings-api.labels" . | nindent 4 }}
 spec:
   {{- if not .Values.autoscaling.enabled }}
   replicas: {{ .Values.replicaCount }}
   {{- end }}
   selector:
     matchLabels:
-      {{- include "ToppingsApi.selectorLabels" . | nindent 6 }}
+      {{- include "toppings-api.selectorLabels" . | nindent 6 }}
   template:
     metadata:
       {{- with .Values.podAnnotations }}
@@ -18,13 +18,13 @@ spec:
         {{- toYaml . | nindent 8 }}
       {{- end }}
       labels:
-        {{- include "ToppingsApi.selectorLabels" . | nindent 8 }}
+        {{- include "toppings-api.selectorLabels" . | nindent 8 }}
     spec:
       {{- with .Values.imagePullSecrets }}
       imagePullSecrets:
         {{- toYaml . | nindent 8 }}
       {{- end }}
-      serviceAccountName: {{ include "ToppingsApi.serviceAccountName" . }}
+      serviceAccountName: {{ include "toppings-api.serviceAccountName" . }}
       securityContext:
         {{- toYaml .Values.podSecurityContext | nindent 8 }}
       containers:
