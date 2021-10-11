@@ -25,6 +25,9 @@ jobs:
     environment: Dev
     runs-on: ubuntu-latest
 
+    outputs:
+      acr_uri: ${{ steps.get_acr_id.outputs.acr_uri }}
+
     steps:
     - uses: actions/checkout@v2
 
@@ -83,7 +86,7 @@ jobs:
         run: az aks get-credentials --name ${{ env.cluster-name }} --resource-group ${{ env.cluster-rg }} --overwrite-existing
 
       - name: Download Helm Chart
-        run: helm pull oci://${{ steps.get_acr_id.outputs.acr_uri }}/helm/toppings-api --version ${{ env.version }} --password ${{ secrets.AZURE_CLIENT_SECRET }} --username ${{ secrets.AZURE_CLIENT_ID }}
+        run: helm pull oci://${{ needs.build.outputs.acr_uri }}/helm/toppings-api --version ${{ env.version }} --password ${{ secrets.AZURE_CLIENT_SECRET }} --username ${{ secrets.AZURE_CLIENT_ID }}
 
       - name: Helm Install
         run: helm install toppings-release toppings-api --atomic
