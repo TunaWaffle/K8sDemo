@@ -12,7 +12,7 @@ jobs:
     steps:
       - uses: actions/checkout@v2
       - id: foo
-        uses: TunaWaffle/K8sDemo/infra@main
+        uses: TunaWaffle/K8sDemo/.github/actions/infra
         with:
           who-to-greet: 'Mona the Octocat'
       - run: echo random-number ${{ steps.foo.outputs.random-number }}
