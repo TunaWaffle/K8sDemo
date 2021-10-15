@@ -26,7 +26,8 @@ jobs:
       TF_IN_AUTOMATION: true
 
     steps:
-    - uses: TunaWaffle/K8sDemo/.github/actions/tf-plan@main
+    - name: Terraform Plan
+      uses: TunaWaffle/K8sDemo/.github/actions/tf-plan@main
       with:
         terraform_version: ${{ env.TF_VERSION }}
         terraform_environment: dev
@@ -46,7 +47,9 @@ jobs:
       TF_IN_AUTOMATION: true
 
     steps:
-    - uses: TunaWaffle/K8sDemo/.github/actions/tf-apply@main
+    - name: Terraform Apply
+      uses: TunaWaffle/K8sDemo/.github/actions/tf-apply@main
       with:
         terraform_version: ${{ env.TF_VERSION }}
         terraform_environment: dev
+        azure_creds: '{"clientId":"${{ secrets.AZURE_CLIENT_ID }}","clientSecret":"${{ secrets.AZURE_CLIENT_SECRET }}","subscriptionId":"${{ secrets.AZURE_SUBSCRIPTION_ID }}","tenantId":"${{ secrets.AZURE_TENANT_ID }}"}'

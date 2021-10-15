@@ -26,22 +26,12 @@ jobs:
       TF_IN_AUTOMATION: true
 
     steps:
-    - uses: actions/checkout@v2
-    - uses: hashicorp/setup-terraform@v1
+    - name: Terraform Plan
+      uses: TunaWaffle/K8sDemo/.github/actions/tf-plan@main
       with:
         terraform_version: ${{ env.TF_VERSION }}
-    - name: Azure Login
-      uses: azure/login@v1
-      with:
-        creds: '{"clientId":"${{ secrets.AZURE_CLIENT_ID }}","clientSecret":"${{ secrets.AZURE_CLIENT_SECRET }}","subscriptionId":"${{ secrets.AZURE_SUBSCRIPTION_ID }}","tenantId":"${{ secrets.AZURE_TENANT_ID }}"}'
-    
-    - name: Terraform Init
-      run: terraform init -input=false
-      working-directory: Infrastructure/env/${{ env.TF_ENV }}
-
-    - name: Terraform Plan
-      run: terraform plan -no-color -input=false
-      working-directory: Infrastructure/env/${{ env.TF_ENV }}
+        terraform_environment: prod
+        azure_creds: '{"clientId":"${{ secrets.AZURE_CLIENT_ID }}","clientSecret":"${{ secrets.AZURE_CLIENT_SECRET }}","subscriptionId":"${{ secrets.AZURE_SUBSCRIPTION_ID }}","tenantId":"${{ secrets.AZURE_TENANT_ID }}"}'
 
   terraform-apply:
     needs: terraform-plan
@@ -57,19 +47,9 @@ jobs:
       TF_IN_AUTOMATION: true
 
     steps:
-    - uses: actions/checkout@v2
-    - uses: hashicorp/setup-terraform@v1
+    - name: Terraform Apply
+      uses: TunaWaffle/K8sDemo/.github/actions/tf-apply@main
       with:
         terraform_version: ${{ env.TF_VERSION }}
-    - name: Azure Login
-      uses: azure/login@v1
-      with:
-        creds: '{"clientId":"${{ secrets.AZURE_CLIENT_ID }}","clientSecret":"${{ secrets.AZURE_CLIENT_SECRET }}","subscriptionId":"${{ secrets.AZURE_SUBSCRIPTION_ID }}","tenantId":"${{ secrets.AZURE_TENANT_ID }}"}'
-    
-    - name: Terraform Init
-      run: terraform init -input=false
-      working-directory: Infrastructure/env/${{ env.TF_ENV }}
-
-    - name: Terraform Apply
-      run: terraform apply -auto-approve -no-color -input=false
-      working-directory: Infrastructure/env/${{ env.TF_ENV }}
+        terraform_environment: prod
+        azure_creds: '{"clientId":"${{ secrets.AZURE_CLIENT_ID }}","clientSecret":"${{ secrets.AZURE_CLIENT_SECRET }}","subscriptionId":"${{ secrets.AZURE_SUBSCRIPTION_ID }}","tenantId":"${{ secrets.AZURE_TENANT_ID }}"}'
