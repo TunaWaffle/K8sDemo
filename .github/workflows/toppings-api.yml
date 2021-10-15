@@ -89,5 +89,5 @@ jobs:
       - name: Download Helm Chart
         run: helm pull oci://${{ needs.build.outputs.acr_uri }}/helm/toppings-api --version ${{ env.version }}
 
-      - name: Helm Install
+      - name: Helm Upgrade
         run: helm upgrade toppings-release ./toppings-api-${{ env.version }}.tgz --atomic --install --version ${{ env.version }} --wait
