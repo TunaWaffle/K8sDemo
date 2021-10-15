@@ -7,6 +7,9 @@ inputs:
   terraform_environment:
     description: The environment folder name that contains the root of the terraform to plan.
     required : true
+  azure_creds:
+    description: The credentials to use with Azure login.
+    required: true
 # outputs:
 #   random-number:
 #     description: "Random number"
@@ -15,18 +18,22 @@ runs:
   using: "composite"
   steps:
     - uses: actions/checkout@v2
+    
     - uses: hashicorp/setup-terraform@v1
       with:
         terraform_version: ${{ inputs.terraform_version }}
+
     - name: Azure Login
       uses: azure/login@v1
       with:
-        creds: '{"clientId":"${{ secrets.AZURE_CLIENT_ID }}","clientSecret":"${{ secrets.AZURE_CLIENT_SECRET }}","subscriptionId":"${{ secrets.AZURE_SUBSCRIPTION_ID }}","tenantId":"${{ secrets.AZURE_TENANT_ID }}"}'
+        creds: ${{ inputs.azure_creds }}
     
     - name: Terraform Init
       run: terraform init -input=false
+      shell: pwsh
       working-directory: Infrastructure/env/${{ inputs.terraform_environment }}
 
     - name: Terraform Plan
       run: terraform plan -no-color -input=false
+      shell: pwsh
       working-directory: Infrastructure/env/${{ inputs.terraform_environment }}
