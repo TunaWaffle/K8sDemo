@@ -42,8 +42,6 @@ jobs:
       run: |
         $loginServer = $(az acr list --resource-group Demo-Global --query [0].loginServer).trim('"')
         echo "::set-output name=acr_uri::$loginServer"
-        $acrName = $(az acr list --resource-group Demo-Global --query [0].name).trim('"')
-        echo "::set-output name=acr_name::$loginServer"
 
     # https://docs.microsoft.com/azure/container-registry/container-registry-auth-service-principal
     - name: Docker Login ACR
