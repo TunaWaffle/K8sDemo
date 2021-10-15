@@ -1,0 +1,32 @@
+name: Terraform Plan
+description: Create a terraform plan to review.
+inputs:
+  terraform_version:
+    description: The version of terraform to use
+    required : true
+  terraform_environment:
+    description: The environment folder name that contains the root of the terraform to plan.
+    required : true
+# outputs:
+#   random-number:
+#     description: "Random number"
+#     value: ${{ steps.random-number-generator.outputs.random-id }}
+runs:
+  using: "composite"
+  steps:
+    - uses: actions/checkout@v2
+    - uses: hashicorp/setup-terraform@v1
+      with:
+        terraform_version: ${{ inputs.terraform_version }}
+    - name: Azure Login
+      uses: azure/login@v1
+      with:
+        creds: '{"clientId":"${{ secrets.AZURE_CLIENT_ID }}","clientSecret":"${{ secrets.AZURE_CLIENT_SECRET }}","subscriptionId":"${{ secrets.AZURE_SUBSCRIPTION_ID }}","tenantId":"${{ secrets.AZURE_TENANT_ID }}"}'
+    
+    - name: Terraform Init
+      run: terraform init -input=false
+      working-directory: Infrastructure/env/${{ inputs.terraform_environment }}
+
+    - name: Terraform Apply
+      run: terraform apply -auto-approve -no-color -input=false
+      working-directory: Infrastructure/env/${{ env.TF_ENV }}
