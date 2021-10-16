@@ -7,7 +7,7 @@ resource "azurerm_resource_group" "global_rg" {
 }
 
 module "global_rg_demo_contributors" {
-  source = "../demo_contributors"
+  source = "../../modules/demo_contributors"
 
   scope = azurerm_resource_group.global_rg.object_id
 }
