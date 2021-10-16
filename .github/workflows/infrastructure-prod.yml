@@ -15,7 +15,7 @@ env:
 
 jobs:
   terraform-plan:
-    environment: Pre-Prod
+    environment: Prod-Staging
     runs-on: ubuntu-latest
 
     env:
@@ -36,7 +36,7 @@ jobs:
   terraform-apply:
     needs: terraform-plan
     if: github.ref == 'refs/heads/main' && (github.event_name == 'push' || github.event_name == 'workflow_dispatch')
-    environment: Prod
+    environment: Prod-Infra
     runs-on: ubuntu-latest
 
     env:

@@ -22,7 +22,7 @@ env:
 jobs:
 
   build:
-    environment: Dev
+    environment: Dev-Staging
     runs-on: ubuntu-latest
 
     outputs:
@@ -67,12 +67,12 @@ jobs:
 
   deploy-dev:
     needs: build
-    environment: Dev
+    environment: Dev-Deploy
     runs-on: ubuntu-latest
 
     env:
       cluster-name: Demo-Dev-aks
-      cluster-rg: Demo-Dev
+      cluster-rg: Dev-Deploy
 
     steps:
       - name: Azure Login

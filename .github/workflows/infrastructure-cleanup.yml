@@ -8,7 +8,7 @@ env:
 
 jobs:
   terraform-destroy-dev:
-    environment: Dev
+    environment: Dev-Infra
     runs-on: ubuntu-latest
 
     env:
@@ -38,7 +38,7 @@ jobs:
       working-directory: Infrastructure/env/${{ env.TF_ENV }}
 
   terraform-destroy-prod:
-    environment: Prod
+    environment: Prod-Infra
     runs-on: ubuntu-latest
 
     env:
