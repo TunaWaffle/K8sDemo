@@ -2,6 +2,7 @@ using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.Identity.Web;
 using Microsoft.OpenApi.Models;
+using ToppingsApi.HealthChecks;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -14,6 +15,9 @@ builder.Services.AddSwaggerGen(c =>
 {
     c.SwaggerDoc("v1", new() { Title = "ToppingsApi", Version = "v1" });
 });
+
+builder.Services.AddHealthChecks()
+    .AddCheck<BasicHealthCheck>("Basic");
 
 var app = builder.Build();
 
@@ -28,6 +32,8 @@ app.UseHttpsRedirection();
 
 app.UseAuthentication();
 app.UseAuthorization();
+
+app.UseHealthChecks("/health");
 
 app.MapControllers();
 
