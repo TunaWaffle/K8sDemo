@@ -9,7 +9,7 @@ resource "azurerm_resource_group" "global_rg" {
 module "global_rg_demo_contributors" {
   source = "../../modules/demo_contributors"
 
-  scope = azurerm_resource_group.global_rg.object_id
+  scope = azurerm_resource_group.global_rg.id
 }
 
 resource "random_pet" "cr_name" {
