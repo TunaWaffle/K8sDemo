@@ -6,6 +6,12 @@ resource "azurerm_resource_group" "app_rg" {
   }
 }
 
+module "app_rg_demo_contributors" {
+  source = "../demo_contributors"
+
+  scope = azurerm_resource_group.app_rg.object_id
+}
+
 resource "azurerm_kubernetes_cluster" "app_cluster" {
   name                      = "Demo-${var.environment}-aks"
   location                  = azurerm_resource_group.app_rg.location
