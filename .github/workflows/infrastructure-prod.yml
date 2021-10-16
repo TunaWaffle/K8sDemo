@@ -4,8 +4,8 @@ on:
   push:
     branches: [ main ]
     paths:
-      - 'Infrastructure/env/prod/**'
-      - 'Infrastructure/env/modules/**'
+      - 'Infrastructure/env/prod/**/*'
+      - 'Infrastructure/env/modules/**/*'
       - '.github/workflows/infrastructure-prod.yml'
   workflow_dispatch:
 
