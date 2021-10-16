@@ -72,7 +72,7 @@ jobs:
 
     env:
       cluster-name: Demo-Dev-aks
-      cluster-rg: Dev-Deploy
+      cluster-rg: Demo-Dev
 
     steps:
       - name: Azure Login
