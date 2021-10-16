@@ -19,6 +19,8 @@ resource "azurerm_kubernetes_cluster" "app_cluster" {
 
   api_server_authorized_ip_ranges = []
   dns_prefix                      = "tunawaffles${lower(var.environment)}"
+  
+  private_cluster_public_fqdn_enabled = true
 
   default_node_pool {
     availability_zones = []
