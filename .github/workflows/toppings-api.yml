@@ -4,12 +4,14 @@ on:
   push:
     branches: [ main ]
     paths-ignore:
+      - '!.github/workflows/toppings-api.yaml'
       - 'Infrastructure/**'
       - 'docs/**'
       - '*.md'
   pull_request:
     branches: [ main ]
     paths-ignore:
+      - '!.github/workflows/toppings-api.yaml'
       - 'Infrastructure/**'
       - 'docs/**'
       - '*.md'
