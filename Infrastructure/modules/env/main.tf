@@ -36,4 +36,10 @@ resource "azurerm_kubernetes_cluster" "app_cluster" {
   tags = {
     Environment = var.environment
   }
+
+  # Attach the K8s to the ACR
+  # See https://docs.microsoft.com/en-us/azure/aks/cluster-container-registry-integration?tabs=azure-cli for more details
+  provisioner "local-exec" {
+    command = "az aks update --name ${self.name} --resource-group ${self.resource_group_name} --attach-acr ${var.acr_name}"
+  }
 }

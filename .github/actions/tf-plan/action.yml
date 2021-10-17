@@ -7,6 +7,9 @@ inputs:
   terraform_environment:
     description: The environment folder name that contains the root of the terraform to plan.
     required : true
+  terraform_additional_arguments:
+    description: Additional arguments that should be appended to the terraform plan
+    required: false
   azure_creds:
     description: The credentials to use with Azure login.
     required: true
@@ -34,6 +37,6 @@ runs:
       working-directory: Infrastructure/env/${{ inputs.terraform_environment }}
 
     - name: Terraform Plan
-      run: terraform plan -no-color -input=false
+      run: terraform plan -no-color -input=false ${{ inputs.terraform_additional_arguments }}
       shell: pwsh
       working-directory: Infrastructure/env/${{ inputs.terraform_environment }}

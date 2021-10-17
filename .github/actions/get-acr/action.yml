@@ -1,0 +1,33 @@
+name: ACR Id
+description: Looks up an ACR's login server address given its resource group.
+inputs:
+  resource_group:
+    description: The name of the resource group that contains the ACR. 
+    required : true
+  azure_creds:
+    description: The credentials to use with Azure login.
+    required: true
+outputs:
+  login_server:
+    description: "The login server for the ACR"
+    value: ${{ steps.get_acr_id.outputs.login_server }}
+  name:
+    description: "The name of the ACR"
+    value: ${{ steps.get_acr_id.outputs.name }}
+runs:
+  using: "composite"
+  steps:
+    - name: Azure Login
+      uses: azure/login@v1
+      with:
+        creds: ${{ inputs.azure_creds }}
+    
+    - id: get_acr_id
+      name: Get ACR Server
+      shell: pwsh
+      run: |
+        $loginServer = $(az acr list --resource-group ${{ inputs.resource_group }} --query [0].loginServer).trim('"')
+        echo "::set-output name=login_server::$loginServer"
+        $name = $(az acr list --resource-group ${{ inputs.resource_group }} --query [0].name).trim('"')
+        echo "::set-output name=name::$name"
+
