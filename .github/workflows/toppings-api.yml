@@ -43,7 +43,7 @@ jobs:
 
     - id: get_acr
       name: Get ACR Info
-      uses: TunaWaffle/K8sDemo/.github/actions/acr-id@main
+      uses: TunaWaffle/K8sDemo/.github/actions/get-acr@main
       with:
         resource_group: Demo-Global
         azure_creds: ${{ env.azure_creds }}
