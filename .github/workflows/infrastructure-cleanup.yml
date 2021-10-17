@@ -35,7 +35,7 @@ jobs:
       working-directory: Infrastructure/env/${{ env.TF_ENV }}
 
     - name: Terraform Apply
-      run: terraform destroy -auto-approve -no-color -input=false
+      run: terraform destroy -auto-approve -no-color -input=false -var 'acr_name='
       working-directory: Infrastructure/env/${{ env.TF_ENV }}
 
   terraform-destroy-prod:
