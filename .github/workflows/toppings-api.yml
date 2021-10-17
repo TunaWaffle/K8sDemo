@@ -70,6 +70,7 @@ jobs:
   deploy-dev:
     needs: build
     environment: Dev-Deploy
+    concurrency: ToppingsApi-Dev-Deploy
     runs-on: ubuntu-latest
 
     env:
@@ -92,4 +93,4 @@ jobs:
         run: helm pull oci://${{ needs.build.outputs.acr_uri }}/helm/toppings-api --version ${{ env.version }}
 
       - name: Helm Upgrade
-        run: helm upgrade toppings-release ./toppings-api-${{ env.version }}.tgz --atomic --install --version ${{ env.version }} --set image.tag=${{ env.version }} --wait
+        run: helm upgrade toppings-release ./toppings-api-${{ env.version }}.tgz --atomic --install --version ${{ env.version }} --set image.tag=${{ env.version }} --set image.repository=${{ needs.build.outputs.acr_uri }}/toppings-api --wait

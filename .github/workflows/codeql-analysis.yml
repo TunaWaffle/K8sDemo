@@ -15,16 +15,12 @@ on:
   push:
     branches: [ main ]
     paths-ignore:
-      - '!.github/workflows/code-ql.yaml'
-      - '.github/**'
       - 'docs/**'
       - '*.md'
   pull_request:
     # The branches below must be a subset of the branches above
     branches: [ main ]
     paths-ignore:
-      - '!.github/workflows/code-ql.yaml'
-      - '.github/**'
       - 'docs/**'
       - '*.md'
   schedule:

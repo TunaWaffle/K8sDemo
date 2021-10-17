@@ -37,6 +37,7 @@ jobs:
     needs: terraform-plan
     if: github.ref == 'refs/heads/main' && (github.event_name == 'push' || github.event_name == 'workflow_dispatch')
     environment: Prod-Infra
+    concurrency: Prod-Infra
     runs-on: ubuntu-latest
 
     env:
