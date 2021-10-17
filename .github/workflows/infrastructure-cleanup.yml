@@ -9,6 +9,7 @@ env:
 jobs:
   terraform-destroy-dev:
     environment: Dev-Infra
+    concurrency: Dev-Infra
     runs-on: ubuntu-latest
 
     env:
@@ -39,6 +40,7 @@ jobs:
 
   terraform-destroy-prod:
     environment: Prod-Infra
+    concurrency: Prod-Infra
     runs-on: ubuntu-latest
 
     env:
