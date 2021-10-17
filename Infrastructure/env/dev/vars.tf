@@ -1,3 +1,3 @@
 variable "acr_name" {
-    type = string
+  type = string
 }

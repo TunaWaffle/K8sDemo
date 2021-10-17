@@ -1,7 +1,7 @@
 resource "azurerm_resource_group" "global_rg" {
   name     = "Demo-Global"
   location = "WestUS"
-  tags     = {
+  tags = {
     Environment = local.environment
   }
 }

@@ -6,5 +6,5 @@ locals {
 #     source = "../../modules/env"
 
 #     environment = local.environment
-#     acr_name = azurerm_container_registry.acr.name
+#     acr_id      = azurerm_container_registry.acr.id
 # }

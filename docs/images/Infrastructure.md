@@ -14,8 +14,8 @@ To do this run the following commands (adjusting values as necessary):
 - Create a storage account (NB: storage account names must be globally unique): `az storage account create -n k8sdemoterraform -g Demo-TF -l westus --sku Standard_LRS`
 - Create container `az storage container create --account-name k8sdemoterraform --name terraform-backend`
 - Update the providers.tf with your values for the backend storage.
-- For the GitHub Action to run, it will require a service principle create. This command only authorizes this service principle for the dev environment. It will either need a second service principle created for prod, or an additional scope added here. 
-`az ad sp create-for-rbac --name "TF-DEV-SP" --role contributor --sdk-auth --scopes /subscriptions/{subscription-id}`
+- For the GitHub Action to run, it will require a service principle create. This command only authorizes this service principle for the dev environment. It will either need a second service principle created for prod, or an additional scope added here. Be aware that the IaC (infrastructure as code) service principles will typically need broad control over the environment, while the ones used to deploy solutions onto th architecture can be much more limited in scope. In addition, for this project the SP running the terraform will also need API permissions for Microsoft Graph - Directory.ReadWrite.All An example of a SP for running the terraform scripts is shown below:
+`az ad sp create-for-rbac --name "DEMO-SP" --role owner --sdk-auth --scopes /subscriptions/{subscription-id}`
 The output from this command should be stored in a [GitHub secret](https://docs.github.com/en/actions/security-guides/encrypted-secrets) named AZURE_CREDENTIALS. For this sample we are storing them as an GitHub Environment secret with the assumption there is a second service principle for prod. This follows the directions [here](https://github.com/marketplace/actions/azure-cli-action#configure-azure-credentials-as-github-secret)
 
 ## Creating the infrastructure

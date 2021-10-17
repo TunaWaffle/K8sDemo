@@ -1,7 +1,7 @@
 variable "environment" {
-    type = string
+  type = string
 }
 
-variable "acr_name" {
+variable "acr_id" {
   type = string
 }
