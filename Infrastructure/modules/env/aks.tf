@@ -26,7 +26,7 @@ resource "azurerm_kubernetes_cluster" "app_cluster" {
 }
 
 data "azurerm_resource_group" "aks_managed_resource_group" {
-    name = azurerm_kubernetes_cluster.app_cluster.node_resource_group
+  name = azurerm_kubernetes_cluster.app_cluster.node_resource_group
 }
 
 resource "azurerm_role_assignment" "aks_acr_pull" {
