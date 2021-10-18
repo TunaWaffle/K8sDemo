@@ -47,7 +47,7 @@ jobs:
       working-directory: ToppingsApi
 
     - name: dotnet test
-      run: dotnet test --no-build
+      run: dotnet test -c Release --no-build
       working-directory: ToppingsApi
 
     - name: dotnet publish
