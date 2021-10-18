@@ -37,18 +37,6 @@ jobs:
     steps:
     - uses: actions/checkout@v2
 
-    - name: Azure Login
-      uses: azure/login@v1
-      with:
-        creds: ${{ env.azure_creds }}
-
-    - id: get_acr
-      name: Get ACR Info
-      uses: TunaWaffle/K8sDemo/.github/actions/get-acr@main
-      with:
-        resource_group: Demo-Global
-        azure_creds: ${{ env.azure_creds }}
-
     - name: Setup .NET 5.0
       uses: actions/setup-dotnet@v1
       with:
@@ -66,15 +54,22 @@ jobs:
       run: dotnet publish -c Release --no-build
       working-directory: ToppingsApi
 
+    - id: get_acr
+      name: Get ACR Info
+      uses: TunaWaffle/K8sDemo/.github/actions/get-acr@main
+      with:
+        resource_group: Demo-Global
+        azure_creds: ${{ env.azure_creds }}
+
     # https://docs.microsoft.com/azure/container-registry/container-registry-auth-service-principal
     - name: Docker Login ACR
       run: docker login ${{ steps.get_acr.outputs.login_server }} --username ${{ secrets.AZURE_CLIENT_ID }} --password ${{ secrets.AZURE_CLIENT_SECRET }}
 
     - name: Build and Push Docker image
       run: |
-        docker build . --file ToppingsApi/Dockerfile --tag ${{ steps.get_acr.outputs.login_server }}/toppings-api:${{ env.version }}
+        docker build . --tag ${{ steps.get_acr.outputs.login_server }}/toppings-api:${{ env.version }}
         docker push --all-tags ${{ steps.get_acr.outputs.login_server }}/toppings-api
-      working-directory: ToppingsApi
+      working-directory: ToppingsApi/ToppingsApi
 
     - name: Helm Registry Login
       run: echo ${{ secrets.AZURE_CLIENT_SECRET }} | helm registry login ${{ steps.get_acr.outputs.login_server }} --username ${{ secrets.AZURE_CLIENT_ID }} --password-stdin
