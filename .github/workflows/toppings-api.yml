@@ -19,6 +19,7 @@ on:
 
 env:
   version: "0.0.${{ github.run_number }}"
+  dotnet_version: "5.0.x"
   HELM_EXPERIMENTAL_OCI: 1
 
 jobs:
@@ -47,6 +48,23 @@ jobs:
       with:
         resource_group: Demo-Global
         azure_creds: ${{ env.azure_creds }}
+
+    - name: Setup .NET 5.0
+      uses: actions/setup-dotnet@v1
+      with:
+        dotnet-version: ${{ env.dotnet_version }}
+
+    - name: dotnet build
+      run: dotnet build -c Release
+      working-directory: ToppingsApi
+
+    - name: dotnet test
+      run: dotnet test --no-build
+      working-directory: ToppingsApi
+
+    - name: dotnet publish
+      run: dotnet publish -c Release --no-build
+      working-directory: ToppingsApi
 
     # https://docs.microsoft.com/azure/container-registry/container-registry-auth-service-principal
     - name: Docker Login ACR
