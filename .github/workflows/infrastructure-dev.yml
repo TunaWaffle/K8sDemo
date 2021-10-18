@@ -39,7 +39,7 @@ jobs:
       with:
         terraform_version: ${{ env.TF_VERSION }}
         terraform_environment: dev
-        terraform_additional_arguments: "-var 'acr_name=${{ steps.get_acr.outputs.name }}'"
+        terraform_additional_arguments: "-var 'acr_id=${{ steps.get_acr.outputs.id }}'"
         azure_creds: '{"clientId":"${{ secrets.AZURE_CLIENT_ID }}","clientSecret":"${{ secrets.AZURE_CLIENT_SECRET }}","subscriptionId":"${{ secrets.AZURE_SUBSCRIPTION_ID }}","tenantId":"${{ secrets.AZURE_TENANT_ID }}"}'
 
   terraform-apply:
@@ -70,5 +70,5 @@ jobs:
       with:
         terraform_version: ${{ env.TF_VERSION }}
         terraform_environment: dev
-        terraform_additional_arguments: "-var 'acr_name=${{ steps.get_acr.outputs.name }}'"
+        terraform_additional_arguments: "-var 'acr_id=${{ steps.get_acr.outputs.id }}'"
         azure_creds: '{"clientId":"${{ secrets.AZURE_CLIENT_ID }}","clientSecret":"${{ secrets.AZURE_CLIENT_SECRET }}","subscriptionId":"${{ secrets.AZURE_SUBSCRIPTION_ID }}","tenantId":"${{ secrets.AZURE_TENANT_ID }}"}'

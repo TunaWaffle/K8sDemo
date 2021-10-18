@@ -14,6 +14,9 @@ outputs:
   name:
     description: "The name of the ACR"
     value: ${{ steps.get_acr_id.outputs.name }}
+  id:
+    description: "The ID of the ACR"
+    value: ${{ steps.get_acr_id.outputs.id }}
 runs:
   using: "composite"
   steps:
@@ -30,4 +33,6 @@ runs:
         echo "::set-output name=login_server::$loginServer"
         $name = $(az acr list --resource-group ${{ inputs.resource_group }} --query [0].name).trim('"')
         echo "::set-output name=name::$name"
+        $id = $(az acr list --resource-group ${{ inputs.resource_group }} --query [0].id).trim('"')
+        echo "::set-output name=id::$id"
 
