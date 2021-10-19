@@ -86,7 +86,7 @@ jobs:
       working-directory: ToppingsApi/ToppingsApi
 
     - name: Helm Registry Login
-      run: echo ${{ secrets.AZURE_CLIENT_SECRET }} | helm registry login ${{ steps.get_acr.outputs.login_server }} --username ${{ secrets.AZURE_CLIENT_ID }} --password-stdin
+      run: echo ${{ secrets.AZURE_CLIENT_SECRET }} | helm registry login ${{ steps.get_acr.outputs.login_server }} --username ${{ secrets.AZURE_CLIENT_ID }} --password-stdin --debug
       working-directory: ToppingsApi/helm
     
     - name: Save Helm Chart
