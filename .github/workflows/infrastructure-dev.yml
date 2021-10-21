@@ -29,13 +29,13 @@ jobs:
     steps:
     - id: get_acr
       name: Get ACR Info
-      uses: TunaWaffle/K8sDemo/.github/actions/get-acr@main
+      uses: ./.github/actions/get-acr
       with:
         resource_group: Demo-Global
         azure_creds: ${{ env.azure_creds }}
 
     - name: Terraform Plan
-      uses: TunaWaffle/K8sDemo/.github/actions/tf-plan@main
+      uses: ./.github/actions/tf-plan
       with:
         terraform_version: ${{ env.TF_VERSION }}
         terraform_environment: dev
@@ -60,13 +60,13 @@ jobs:
     steps:
     - id: get_acr
       name: Get ACR Info
-      uses: TunaWaffle/K8sDemo/.github/actions/get-acr@main
+      uses: ./.github/actions/get-acr
       with:
         resource_group: Demo-Global
         azure_creds: ${{ env.azure_creds }}
 
     - name: Terraform Apply
-      uses: TunaWaffle/K8sDemo/.github/actions/tf-apply@main
+      uses: ./.github/actions/tf-apply
       with:
         terraform_version: ${{ env.TF_VERSION }}
         terraform_environment: dev
