@@ -11,7 +11,7 @@ resource "azurerm_mssql_server" "sql_server" {
   administrator_login          = random_pet.sql_admin_username.id
   administrator_login_password = random_password.sql_admin_password.result
   minimum_tls_version          = "1.2"
-  public_network_access_enabled = false
+  public_network_access_enabled = true
 
 
   primary_user_assigned_identity_id = azurerm_kubernetes_cluster.app_cluster.kubelet_identity[0].user_assigned_identity_id
