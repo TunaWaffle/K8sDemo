@@ -20,8 +20,6 @@ inputs:
 runs:
   using: "composite"
   steps:
-    - uses: actions/checkout@v2
-
     - uses: hashicorp/setup-terraform@v1
       with:
         terraform_version: ${{ inputs.terraform_version }}

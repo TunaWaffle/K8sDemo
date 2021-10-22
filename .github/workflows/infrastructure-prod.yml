@@ -26,6 +26,8 @@ jobs:
       TF_IN_AUTOMATION: true
 
     steps:
+    - uses: actions/checkout@v2
+
     - name: Terraform Plan
       uses: ./.github/actions/tf-plan
       with:
@@ -48,6 +50,8 @@ jobs:
       TF_IN_AUTOMATION: true
 
     steps:
+    - uses: actions/checkout@v2
+    
     - name: Terraform Apply
       uses: ./.github/actions/tf-apply
       with:
