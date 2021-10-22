@@ -13,6 +13,10 @@ resource "azurerm_mssql_server" "sql_server" {
   minimum_tls_version          = "1.2"
   public_network_access_enabled = true
 
+  azuread_administrator {
+    login_username = data.azuread_group.demo_contributors.display_name
+    object_id      = data.azuread_group.demo_contributors.object_id
+  }
 
   primary_user_assigned_identity_id = azurerm_kubernetes_cluster.app_cluster.kubelet_identity[0].user_assigned_identity_id
   
