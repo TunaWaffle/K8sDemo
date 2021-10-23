@@ -11,7 +11,7 @@ resource "azurerm_mssql_server" "sql_server" {
   administrator_login          = random_pet.sql_admin_username.id
   administrator_login_password = random_password.sql_admin_password.result
   minimum_tls_version          = "1.2"
-  public_network_access_enabled = true
+  public_network_access_enabled = var.sql_enable_public_access
 
   azuread_administrator {
     login_username = data.azuread_group.demo_contributors.display_name
