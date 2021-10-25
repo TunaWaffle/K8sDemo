@@ -1,4 +1,6 @@
 resource "random_pet" "sql_storage_account" {
+  separator = ""
+  length    = 1
 }
 
 resource "azurerm_storage_account" "sql_backup" {
