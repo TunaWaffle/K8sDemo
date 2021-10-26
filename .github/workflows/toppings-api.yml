@@ -68,6 +68,7 @@ jobs:
         path: coveragereport
     
     - name: Ensure SQL Script is up-to-date
+      shell: pwsh
       run: |
         dotnet ef migrations script --idempotent --no-build --no-color --configuration Release --project ToppingsApi/ToppingsApi/ToppingsApi.csproj --output ToppingsApi/ToppingsApi/Migrations/DBFull.sql
         $status = $(git status --porcelain)
