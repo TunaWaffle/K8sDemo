@@ -35,7 +35,7 @@ resource "azurerm_mssql_server" "sql_server" {
 resource "azurerm_sql_firewall_rule" "allow_azure_services" {
   name                = "AllowAzureServices"
   resource_group_name = azurerm_resource_group.app_rg.name
-  server_name         = azurerm_sql_server.sql_server.name
+  server_name         = azurerm_mssql_server.sql_server.name
   start_ip_address    = "0.0.0.0"
   end_ip_address      = "0.0.0.0"
 }
