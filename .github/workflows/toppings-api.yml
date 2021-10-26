@@ -69,9 +69,11 @@ jobs:
     
     - name: Ensure SQL Script is up-to-date
       run: |
-        dotnet ef migrations script --idempotent --no-build --configuration Release --project ToppingsApi/ToppingsApi/ToppingsApi.csproj --output ToppingsApi/ToppingsApi/Migrations/DBFull.sql
+        dotnet ef migrations script --idempotent --no-build --no-color --configuration Release --project ToppingsApi/ToppingsApi/ToppingsApi.csproj --output ToppingsApi/ToppingsApi/Migrations/DBFull.sql
         $status = $(git status --porcelain)
         return $status.Length
+      env:
+        "ConnectionStrings:AppsDatabase": "Data Source=(localdb)\\MSSQLLocalDB;Initial Catalog=app-db;Integrated Security=true;"
 
     - uses: actions/upload-artifact@v2
       with:
