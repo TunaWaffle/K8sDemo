@@ -465,3 +465,4 @@ $RECYCLE.BIN/
 ## Helm
 ##
 *.tgz
+*.bacpac
