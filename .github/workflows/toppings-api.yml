@@ -121,7 +121,7 @@ jobs:
       working-directory: ToppingsApi/helm
 
   deploy-dev-sql:
-    if: github.event_name != 'pull_request'
+    #if: github.event_name != 'pull_request'
     needs: build
     environment: Dev-Deploy
     concurrency: Sql-Dev-Deploy
