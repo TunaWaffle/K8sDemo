@@ -39,7 +39,7 @@ namespace ToppingsApi
             });
 
             services.AddDbContext<ToppingsContext>(options =>
-                options.UseSqlServer(options => Configuration.GetConnectionString("AppsDatabase")));
+                options.UseSqlServer(Configuration.GetConnectionString("AppsDatabase")));
 
             services.AddHealthChecks()
                 .AddCheck<BasicHealthCheck>("Basic");

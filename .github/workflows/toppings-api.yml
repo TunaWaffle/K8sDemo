@@ -42,6 +42,9 @@ jobs:
       with:
         dotnet-version: ${{ env.dotnet_version }}
 
+    - name: Restore local dotnet tool
+      run: dotnet tool restore
+
     - name: dotnet build
       run: dotnet build -c Release
       working-directory: ToppingsApi
@@ -63,6 +66,17 @@ jobs:
       with:
         name: CoverageReport
         path: coveragereport
+    
+    - name: Ensure SQL Script is up-to-date
+      run: |
+        dotnet ef migrations script --idempotent --no-build -c Release --project ToppingsApi/ToppingsApi/ToppingsApi.csproj --output ToppingsApi/ToppingsApi/Migrations/DBFull.sql
+        $status = $(git status --porcelain)
+        return $status.Length
+
+    - uses: actions/upload-artifact@v2
+      with:
+        name: DBFull.sql
+        path: ToppingsApi/ToppingsApi/Migrations/DBFull.sql
 
     - name: dotnet publish
       run: dotnet publish -c Release --no-build

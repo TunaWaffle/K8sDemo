@@ -31,10 +31,6 @@ namespace ToppingsApi.Controllers
         [HttpGet]
         public async Task<IEnumerable<Topping>> Get()
         {
-            using (var sql = new SqlConnection(Config.GetConnectionString("AppsDatabase")))
-            {
-                sql.Open();
-            }
             return await Context.Toppings.ToListAsync();
         }
     }
