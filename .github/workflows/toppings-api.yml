@@ -120,6 +120,49 @@ jobs:
       run: helm push toppings-api-${{ env.version }}.tgz oci://${{ steps.get_acr.outputs.login_server }}/helm
       working-directory: ToppingsApi/helm
 
+  deploy-dev-sql:
+    if: github.event_name != 'pull_request'
+    needs: build
+    environment: Dev-Deploy
+    concurrency: Sql-Dev-Deploy
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/download-artifact@v2
+        with:
+          name: DBFull.sql
+
+      # - name: Public IP
+      #   id: pip
+      #   uses: haythem/public-ip@v1.2
+      
+      - name: Azure Login
+        uses: azure/login@v1
+        with:
+          creds: '{"clientId":"${{ secrets.AZURE_CLIENT_ID }}","clientSecret":"${{ secrets.AZURE_CLIENT_SECRET }}","subscriptionId":"${{ secrets.AZURE_SUBSCRIPTION_ID }}","tenantId":"${{ secrets.AZURE_TENANT_ID }}"}'
+
+      # - name: Add firewall rule
+      #   id: firewall-rule
+      #   env:
+      #     sql_server: demodevsql
+      #     sql_resource_group: Demo-Dev
+      #   run: |
+      #     az sql server firewall-rule create --name "GHA-${{ github.run_id }}" --resource-group "${{ env.sql_resource_group }}" --server "${{ ev.sql_server }}" --start-ip-address "${{ steps.ip.outputs.ipv4 }}" --end-ip-address "${{ steps.ip.outputs.ipv4 }}"
+      
+      - name: Azure Login
+        uses: azure/login@v1
+        with:
+          creds: '{"clientId":"${{ secrets.AZURE_CLIENT_ID }}","clientSecret":"${{ secrets.AZURE_CLIENT_SECRET }}","subscriptionId":"${{ secrets.AZURE_SUBSCRIPTION_ID }}","tenantId":"${{ secrets.AZURE_TENANT_ID }}"}'
+
+      # Need to get connection string and creds. Should be able to use SP with SAS Token.
+      # https://docs.microsoft.com/en-us/sql/connect/odbc/linux-mac/connecting-with-sqlcmd?view=sql-server-ver15
+      # Can get connection string like this: az sql db show-connection-string --server demodevsql --name app-db --client ado.net
+      - uses: azure/sql-action@v1
+        with:
+          server-name: demodevsql.database.windows.net
+          connection-string: ${{ secrets.AZURE_SQL_CONNECTION_STRING }}
+          sql-file: './DBFull.sql'
+
   deploy-dev:
     if: github.event_name != 'pull_request'
     needs: build
