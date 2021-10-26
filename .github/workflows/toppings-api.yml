@@ -150,6 +150,7 @@ jobs:
 
       - id: get_connection_string
         name: Get DB Connection String
+        shell: pwsh
         run: |
           $connectionString = $(az sql db show-connection-string --name "app-db" --server "demodevsql" --client ado.net --auth-type ADIntegrated)
           echo "::set-output name=connection_string::$connectionString"
