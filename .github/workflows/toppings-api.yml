@@ -128,6 +128,9 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
+      #TODO: Remove this once the actions are in their own repo
+      - uses: actions/checkout@v2
+
       - uses: actions/download-artifact@v2
         with:
           name: DBFull.sql
@@ -141,6 +144,16 @@ jobs:
         with:
           creds: '{"clientId":"${{ secrets.AZURE_CLIENT_ID }}","clientSecret":"${{ secrets.AZURE_CLIENT_SECRET }}","subscriptionId":"${{ secrets.AZURE_SUBSCRIPTION_ID }}","tenantId":"${{ secrets.AZURE_TENANT_ID }}"}'
 
+      # - id: get_sas
+      #   name: Get SAS Token
+      #   uses: ./.github/actions/get-sas
+
+      - id: get_connection_string
+        name: Get DB Connection String
+        run: |
+          $connectionString = $(az sql db show-connection-string --name "app-db" --server "demodevsql" --client ado.net --auth-type ADIntegrated)
+          echo "::set-output name=connection_string::$connectionString"
+
       # - name: Add firewall rule
       #   id: firewall-rule
       #   env:
@@ -149,18 +162,13 @@ jobs:
       #   run: |
       #     az sql server firewall-rule create --name "GHA-${{ github.run_id }}" --resource-group "${{ env.sql_resource_group }}" --server "${{ ev.sql_server }}" --start-ip-address "${{ steps.ip.outputs.ipv4 }}" --end-ip-address "${{ steps.ip.outputs.ipv4 }}"
       
-      - name: Azure Login
-        uses: azure/login@v1
-        with:
-          creds: '{"clientId":"${{ secrets.AZURE_CLIENT_ID }}","clientSecret":"${{ secrets.AZURE_CLIENT_SECRET }}","subscriptionId":"${{ secrets.AZURE_SUBSCRIPTION_ID }}","tenantId":"${{ secrets.AZURE_TENANT_ID }}"}'
-
       # Need to get connection string and creds. Should be able to use SP with SAS Token.
       # https://docs.microsoft.com/en-us/sql/connect/odbc/linux-mac/connecting-with-sqlcmd?view=sql-server-ver15
       # Can get connection string like this: az sql db show-connection-string --server demodevsql --name app-db --client ado.net
       - uses: azure/sql-action@v1
         with:
           server-name: demodevsql.database.windows.net
-          connection-string: ${{ secrets.AZURE_SQL_CONNECTION_STRING }}
+          connection-string: ${{ steps.get_connection_string.outputs.connection_string }}
           sql-file: './DBFull.sql'
 
   deploy-dev:
