@@ -13,6 +13,12 @@ resource "azurerm_storage_account" "sql_backup" {
   account_kind             = "BlobStorage"
 }
 
+resource "azurerm_storage_container" "sql_backup_container" {
+  name                  = "sqlbackups"
+  storage_account_name  = azurerm_storage_account.sql_backup.name
+  container_access_type = "private"
+}
+
 resource "azurerm_storage_management_policy" "delete_after_24h" {
   storage_account_id = azurerm_storage_account.sql_backup.id
 
