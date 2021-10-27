@@ -13,20 +13,38 @@ $databaseName = "app-db"
 $storageContainer = "sqlbackups"
 $bacpacFile = "dev.bacpac"
 
+$sqlLoginSecretName = "sql-admin-username"
+$sqlPasswordSecretName = "sql-admin-password"
+
+
 $user = az account show --query user.name
 $blobName = "$user-$bacpacFile"
-
 Write-Host "Creating database backup for $user"
 
 Write-Host "Getting storage account for SQL backup"
 $sqlBackupStorageAccount = $(az storage account list -g "$resourceGroup" --query "[? starts_with(name, 'sqlbackup')].name | [0]")
 $accessKey = $(az storage account keys list -n $sqlBackupStorageAccount -g "$resourceGroup" --query [0].value)
 
-Write-Host "Getting SQL database credentials"
-Push-Location Infrastructure/env/dev
-$adminLogin = $(terraform output sql_server_admin_login)
-$adminPassword = $(terraform output sql_server_admin_password)
-Pop-Location
+Write-Host "Getting SQL database credentials from key vault"
+$keyVaultName = $(az keyvault list --resource-group "$resourceGroup" --query [0].name)
+if (!$keyVaultName) {
+    Write-Error "Failed to find key valut in $resourceGroup"
+    return 1
+}
+Write-Host "  Using secrets from $keyVaultName"
+
+$adminLogin = $(az keyvault secret show --vault-name "$keyVaultName" --name "$sqlLoginSecretName" --query value)
+if (!$adminLogin) {
+    Write-Error "Failed to find login secret $sqlLoginSecretName in Key Vault $keyVaultName"
+    return 1
+}
+Write-Host "  Retrieved SQL admin login"
+$adminPassword = $(az keyvault secret show --vault-name "$keyVaultName" --name "$sqlPasswordSecretName" --query value)
+if (!$adminPassword) {
+    Write-Error "Failed to find login password secret $sqlPasswordSecretName in Key Vault $keyVaultName"
+    return 1
+}
+Write-Host "  Retrieved SQL admin login password"
 
 Write-Host "Exporting database backup"
 az sql db export `

@@ -127,6 +127,11 @@ jobs:
     concurrency: Sql-Dev-Deploy
     runs-on: ubuntu-latest
 
+    env:
+      resource_group: Demo-Dev
+      sql_server: demodevsql
+      database: app-db
+
     steps:
       #TODO: Remove this once the actions are in their own repo
       - uses: actions/checkout@v2
@@ -144,6 +149,19 @@ jobs:
         with:
           creds: '{"clientId":"${{ secrets.AZURE_CLIENT_ID }}","clientSecret":"${{ secrets.AZURE_CLIENT_SECRET }}","subscriptionId":"${{ secrets.AZURE_SUBSCRIPTION_ID }}","tenantId":"${{ secrets.AZURE_TENANT_ID }}"}'
 
+      - id: get_key_vault
+        name: Get Key Vault
+        shell: pwsh
+        run: |
+          $keyVaultName = $(az keyvault list --resource-group "${{ env.resource_group }}" --query [0].name)
+          echo "::set-output name=name::$keyVaultName"
+
+      - uses: Azure/get-keyvault-secrets@v1
+        id: key_vault
+        with:
+          keyvault: ${{ steps.get_key_vault.outputs.name }}
+          secrets: 'sql-admin-username,sql-admin-password'
+
       # - id: get_sas
       #   name: Get SAS Token
       #   uses: ./.github/actions/get-sas
@@ -152,8 +170,10 @@ jobs:
         name: Get DB Connection String
         shell: pwsh
         run: |
-          $connectionString = $(az sql db show-connection-string --name "app-db" --server "demodevsql" --client ado.net --auth-type ADIntegrated)
+          $connectionString = $(az sql db show-connection-string --name "${{ env.database }}" --server "${{ env.sql_server }}" --client ado.net)
           $connectionString = $connectionString[1..($connectionString.Length - 2)] -join ''
+          $connectionString = $connectionString -replace "<username>", "${{ steps.key_vault.outputs.sql-admin-username }}"
+          $connectionString = $connectionString -replace "<password>", "${{ steps.key_vault.outputs.sql-admin-password }}"
           echo "::set-output name=connection_string::$connectionString"
 
       # - name: Add firewall rule
@@ -169,7 +189,7 @@ jobs:
       # Can get connection string like this: az sql db show-connection-string --server demodevsql --name app-db --client ado.net
       - uses: azure/sql-action@v1
         with:
-          server-name: demodevsql.database.windows.net
+          server-name: ${{ env.sql_server }}.database.windows.net
           connection-string: ${{ steps.get_connection_string.outputs.connection_string }}
           sql-file: './DBFull.sql'
 
