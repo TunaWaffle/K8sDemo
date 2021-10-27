@@ -6,6 +6,8 @@ resource "azurerm_resource_group" "app_rg" {
   }
 }
 
+data "azurerm_client_config" "current" {}
+
 module "app_rg_demo_contributors" {
   source = "../demo_contributors"
 
