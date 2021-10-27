@@ -1,35 +1,19 @@
 resource "azurerm_key_vault" "key_vault" {
-  name                        = "demo${lower(var.environment)}${random_pet.key_vault_name.id}-kv"
-  location                    = azurerm_resource_group.app_rg.location
-  resource_group_name         = azurerm_resource_group.app_rg.name
-  tenant_id                   = data.azurerm_client_config.current.tenant_id
-  soft_delete_retention_days  = 7
+  name                       = "demo${lower(var.environment)}${random_pet.key_vault_name.id}-kv"
+  location                   = azurerm_resource_group.app_rg.location
+  resource_group_name        = azurerm_resource_group.app_rg.name
+  tenant_id                  = data.azurerm_client_config.current.tenant_id
+  enable_rbac_authorization  = true
+  soft_delete_retention_days = 7
 
   sku_name = "standard"
+}
 
-  access_policy {
-    tenant_id = data.azurerm_client_config.current.tenant_id
-    object_id = data.azurerm_client_config.current.object_id
-
-    key_permissions = [
-      "Get",
-    ]
-
-    secret_permissions = [
-      "Backup",
-      "Delete",
-      "Get",
-      "List",
-      "Purge",
-      "Recover",
-      "Restore",
-      "Set"
-    ]
-
-    storage_permissions = [
-      "Get",
-    ]
-  }
+#not strictly needed in this case since the SP used in this sample has contributor on the subscription
+resource "azurerm_role_assignment" "sp_administrator" {
+  scope                = azurerm_key_vault.key_vault.id
+  role_definition_name = "Key Vault Administrator"
+  principal_id         = data.azurerm_client_config.current.object_id
 }
 
 resource "azurerm_key_vault_secret" "sql_admin_username" {
