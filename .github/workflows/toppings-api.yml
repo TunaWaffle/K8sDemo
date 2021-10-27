@@ -159,8 +159,8 @@ jobs:
       - uses: Azure/get-keyvault-secrets@v1
         id: key_vault
         with:
-          keyvault: ${{ steps.get_key_vault.outputs.name }}
-          secrets: 'sql-admin-username,sql-admin-password'
+          keyvault: "${{ steps.get_key_vault.outputs.name }}"
+          secrets: "sql-admin-username, sql-admin-password"
 
       # - id: get_sas
       #   name: Get SAS Token
