@@ -153,7 +153,7 @@ jobs:
         shell: pwsh
         run: |
           $connectionString = $(az sql db show-connection-string --name "app-db" --server "demodevsql" --client ado.net --auth-type ADIntegrated)
-          $connectionString[1..($connectionString.Length - 2)] -join ''
+          $connectionString = $connectionString[1..($connectionString.Length - 2)] -join ''
           echo "::set-output name=connection_string::$connectionString"
 
       # - name: Add firewall rule
