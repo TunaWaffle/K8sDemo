@@ -159,7 +159,7 @@ jobs:
       - uses: Azure/get-keyvault-secrets@v1
         id: key_vault
         with:
-          keyvault: ${{ steps.get_key_vault.outputs.name }}
+          keyvault: demodevwasp-kv
           secrets: "sqlAdminUsername,sqlAdminPassword"
 
       # - id: get_sas
