@@ -173,7 +173,7 @@ jobs:
           $connectionString = $(az sql db show-connection-string --name "${{ env.database }}" --server "${{ env.sql_server }}" --client ado.net --output tsv)
           $connectionString = $connectionString -replace "<username>", "${{ steps.key_vault.outputs.sqlAdminUsername }}"
           $connectionString = $connectionString -replace "<password>", "${{ steps.key_vault.outputs.sqlAdminPassword }}"
-          $connectionString = $connectionString -replace "Database=", "Initial Catelog="
+          $connectionString = $connectionString -replace "Database=", "Initial Catalog="
           $connectionString = $connectionString -replace "User ID=", "User Id="
           echo "::set-output name=connection_string::$connectionString"
 
