@@ -154,12 +154,13 @@ jobs:
         shell: pwsh
         run: |
           $keyVaultName = $(az keyvault list --resource-group "${{ env.resource_group }}" --query [0].name)
+          $keyVaultName = $keyVaultName.Trim('"')
           echo "::set-output name=name::$keyVaultName"
 
       - uses: Azure/get-keyvault-secrets@v1
         id: key_vault
         with:
-          keyvault: demodevwasp-kv
+          keyvault: ${{ steps.get_key_vault.outputs.name }}
           secrets: "sqlAdminUsername,sqlAdminPassword"
 
       # - id: get_sas
