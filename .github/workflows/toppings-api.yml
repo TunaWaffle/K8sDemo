@@ -153,8 +153,7 @@ jobs:
         name: Get Key Vault
         shell: pwsh
         run: |
-          $keyVaultName = $(az keyvault list --resource-group "${{ env.resource_group }}" --query [0].name)
-          $keyVaultName = $keyVaultName.Trim('"')
+          $keyVaultName = $(az keyvault list --resource-group "${{ env.resource_group }}" --query [0].name --output tsv)
           echo "::set-output name=name::$keyVaultName"
 
       - uses: Azure/get-keyvault-secrets@v1
@@ -171,8 +170,8 @@ jobs:
         name: Get DB Connection String
         shell: pwsh
         run: |
-          $connectionString = $(az sql db show-connection-string --name "${{ env.database }}" --server "${{ env.sql_server }}" --client ado.net)
-          $connectionString = $connectionString[1..($connectionString.Length - 2)] -join ''
+          $connectionString = $(az sql db show-connection-string --name "${{ env.database }}" --server "${{ env.sql_server }}" --client ado.net --output tsv)
+          Write-Host Got connection string: $connectionString
           $connectionString = $connectionString -replace "<username>", "${{ steps.key_vault.outputs.sqlAdminUsername }}"
           $connectionString = $connectionString -replace "<password>", "${{ steps.key_vault.outputs.sqlAdminPassword }}"
           echo "::set-output name=connection_string::$connectionString"
