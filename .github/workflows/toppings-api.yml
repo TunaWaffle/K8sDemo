@@ -125,7 +125,8 @@ jobs:
     needs: build
     environment: Dev-Deploy
     concurrency: Sql-Dev-Deploy
-    runs-on: ubuntu-latest
+    #Windows is required for azure/sql-action@v1
+    runs-on: windows-latest
 
     env:
       resource_group: Demo-Dev
