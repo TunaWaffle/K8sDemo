@@ -10,7 +10,7 @@ resource "azurerm_key_vault" "key_vault" {
 }
 
 #not strictly needed in this case since the SP used in this sample has contributor on the subscription
-resource "azurerm_role_assignment" "sp_administrator" {
+resource "azurerm_role_assignment" "sp_key_vault_administrator" {
   scope                = azurerm_key_vault.key_vault.id
   role_definition_name = "Key Vault Administrator"
   principal_id         = data.azurerm_client_config.current.object_id
