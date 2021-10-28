@@ -29,5 +29,5 @@ resource "azurerm_key_vault_secret" "sql_admin_password" {
 }
 
 resource "random_pet" "key_vault_name" {
-  length    = 1
+  length = 1
 }

@@ -26,7 +26,7 @@ resource "azurerm_storage_management_policy" "delete_after_24h" {
     name    = "DeleteOldBlobs"
     enabled = true
     filters {
-      blob_types   = ["blockBlob"]
+      blob_types = ["blockBlob"]
     }
     actions {
       base_blob {

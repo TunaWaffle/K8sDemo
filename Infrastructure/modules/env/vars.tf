@@ -7,6 +7,6 @@ variable "acr_id" {
 }
 
 variable "sql_enable_public_access" {
-  type = bool
+  type    = bool
   default = false
 }
