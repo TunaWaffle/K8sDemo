@@ -17,13 +17,13 @@ resource "azurerm_role_assignment" "sp_administrator" {
 }
 
 resource "azurerm_key_vault_secret" "sql_admin_username" {
-  name         = "sql-admin-username"
+  name         = "sqlAdminUsername"
   value        = azurerm_mssql_server.sql_server.administrator_login
   key_vault_id = azurerm_key_vault.key_vault.id
 }
 
 resource "azurerm_key_vault_secret" "sql_admin_password" {
-  name         = "sql-admin-password"
+  name         = "sqlAdminPassword"
   value        = azurerm_mssql_server.sql_server.administrator_login_password
   key_vault_id = azurerm_key_vault.key_vault.id
 }

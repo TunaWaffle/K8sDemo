@@ -172,8 +172,8 @@ jobs:
         run: |
           $connectionString = $(az sql db show-connection-string --name "${{ env.database }}" --server "${{ env.sql_server }}" --client ado.net)
           $connectionString = $connectionString[1..($connectionString.Length - 2)] -join ''
-          $connectionString = $connectionString -replace "<username>", "${{ steps.key_vault.outputs.sql-admin-username }}"
-          $connectionString = $connectionString -replace "<password>", "${{ steps.key_vault.outputs.sql-admin-password }}"
+          $connectionString = $connectionString -replace "<username>", "${{ steps.key_vault.outputs.sqlAdminUsername }}"
+          $connectionString = $connectionString -replace "<password>", "${{ steps.key_vault.outputs.sqlAdminPassword }}"
           echo "::set-output name=connection_string::$connectionString"
 
       # - name: Add firewall rule
