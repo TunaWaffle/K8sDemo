@@ -1,0 +1,22 @@
+name: Get SAS Token
+description: Gets a SAS token for the currently logged in user
+inputs:
+  resource:
+    description: The azure resource endpoint to get a token for. Default to https://database.windows.net 
+    required : false
+    default: https://database.windows.net
+outputs:
+  token:
+    description: "The SAS token"
+    value: ${{ steps.get_acr_id.outputs.login_server }}
+runs:
+  using: "composite"
+  steps:
+    - id: get_sas_token
+      name: Get SAS Token
+      shell: pwsh
+      run: |
+        $json = (az account get-access-token --resource ${{ inputs.resource }} | ConvertFrom-Json)
+        echo "::add-mask::$json.accessToken"
+        echo "::set-output name=token::$json.accessToken"
+

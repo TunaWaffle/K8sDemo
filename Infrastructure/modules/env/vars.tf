@@ -5,3 +5,8 @@ variable "environment" {
 variable "acr_id" {
   type = string
 }
+
+variable "sql_enable_public_access" {
+  type    = bool
+  default = false
+}

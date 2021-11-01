@@ -10,24 +10,24 @@ resource "azurerm_key_vault" "key_vault" {
 }
 
 #not strictly needed in this case since the SP used in this sample has contributor on the subscription
-resource "azurerm_role_assignment" "sp_administrator" {
+resource "azurerm_role_assignment" "sp_key_vault_administrator" {
   scope                = azurerm_key_vault.key_vault.id
   role_definition_name = "Key Vault Administrator"
   principal_id         = data.azurerm_client_config.current.object_id
 }
 
 resource "azurerm_key_vault_secret" "sql_admin_username" {
-  name         = "sql-admin-username"
+  name         = "sqlAdminUsername"
   value        = azurerm_mssql_server.sql_server.administrator_login
   key_vault_id = azurerm_key_vault.key_vault.id
 }
 
 resource "azurerm_key_vault_secret" "sql_admin_password" {
-  name         = "sql-admin-password"
+  name         = "sqlAdminPassword"
   value        = azurerm_mssql_server.sql_server.administrator_login_password
   key_vault_id = azurerm_key_vault.key_vault.id
 }
 
 resource "random_pet" "key_vault_name" {
-  length    = 1
+  length = 1
 }

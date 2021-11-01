@@ -1,6 +1,7 @@
 module "env" {
   source = "../../modules/env"
 
-  environment = "Dev"
-  acr_id      = var.acr_id
+  acr_id                   = var.acr_id
+  environment              = "Dev"
+  sql_enable_public_access = true
 }
