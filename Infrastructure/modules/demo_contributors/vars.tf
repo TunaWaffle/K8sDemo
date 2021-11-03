@@ -1,3 +1,0 @@
-variable "scope" {
-  type = string
-}
