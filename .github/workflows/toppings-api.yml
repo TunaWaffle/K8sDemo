@@ -166,7 +166,7 @@ jobs:
       #TODO: Remove this once the actions are in their own repo
       - uses: actions/checkout@v2
 
-      - uses: actions/download-artifact@v2
+      - uses: actions/download-artifact@v4.1.7
         with:
           name: DBFull.sql
       
